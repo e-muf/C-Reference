@@ -9,7 +9,7 @@ typedef struct Node {
 	struct Node *right;
 } Node;
 
-// Estructura Tronco, servirá para imprimir el árbol
+// Estructura Tronco, servira para imprimir el arbol
 typedef struct Trunk {
 	struct Trunk *previous;
 	char branch[5];
@@ -17,7 +17,7 @@ typedef struct Trunk {
 
 // Prototipos
 Node *createNode(int);
-void insertNode(Node *, int);
+void insertNode(Node **, int);
 void printTree(Node *, Trunk *, int); 
 
 int main() {
@@ -25,11 +25,11 @@ int main() {
 	Node *tree = NULL;
 
 	do {
-		printf("\tÁRBOL BINARIO");
+		printf("\tARBOL BINARIO");
 
-		printf("\nSelecciona una opción:");
-		printf("\n1. Agregar nodo al árbol.");
-		printf("\n2. Imprimir árbol.");
+		printf("\nSelecciona una opcion:");
+		printf("\n1. Agregar nodo al arbol.");
+		printf("\n2. Imprimir arbol.");
 		printf("\n3. Salir.");
 		printf("\n>> ");
 		scanf("%d", &option);
@@ -39,26 +39,26 @@ int main() {
 		case 1:
 			printf("\nIngrese el dato del nodo: ");
 			scanf("%d", &data);
-			insertNode(tree, data);
+			insertNode(&tree, data);
 			printf("\n[+] Se ha ingresado el nodo correctamente\n\n");
+			system("pause");
 			break;
 		case 2:
 			printTree(tree, NULL, 0);
-			getchar();
+			system("pause");
 			break;
 
 		default:
 			break;
 		}
 		printf("%d\n", tree->data);
-		getchar();
-		system("clear");
+		system("cls");
 	}while(option != 3);
 
 	return 0;
 }
 
-// Código para crear nodos
+// Codigo para crear nodos
 Node *createNode(int number) {
 	Node *new_node = (Node *)malloc(sizeof(Node));
     
@@ -69,24 +69,24 @@ Node *createNode(int number) {
 	return new_node;
 } 
 
-// Insertar nodos en el árbol
-void insertNode(Node *tree, int number) {
-	// Si el árbol esta vacío...
-	if(tree == NULL) {
+// Insertar nodos en el arbol
+void insertNode(Node **tree, int number) {
+	// Si el arbol esta vacio...
+	if(*tree == NULL) {
 		Node *new_node = createNode(number);
-		tree = new_node;
+		*tree = new_node;
 	}
-	// Si el arbol tiene 1 o más nodos
+	// Si el arbol tiene 1 o mas nodos
 	else {
-		int rootValue = tree->data;
-		printf("%d", tree->data);
-		// Si el número es menor al valor de la raíz, se inserta en la izquierda
+		int rootValue = (*tree)->data;
+		
+		// Si el numero es menor al valor de la raiz, se inserta en la izquierda
 		if(number < rootValue) {
-			insertNode(tree->left, number);
+			insertNode(&(*tree)->left, number);
 		}
-		// Si el número es mayor al valor de la raíz, se inserta en la derecha
+		// Si el numero es mayor al valor de la raiz, se inserta en la derecha
 		else {
-			insertNode(tree->right, number);
+			insertNode(&(*tree)->right, number);
 		}
 	}
 }
@@ -102,16 +102,12 @@ void showTrunks(Trunk *p) {
 }
 
 void printTree(Node *tree, Trunk *previous, int is_left) {
-	
-	printf("%d", tree->data);
 
-	// Si el arbol está vacío
+	// Si el arbol esta vacio
 	if(tree == NULL) {	
 		return;
 	}
-
-	printf("Llegue aqui");
-
+	
 	char previous_string[5] = "    ";
 	Trunk *trunk = (Trunk *)malloc(sizeof(Trunk));
 	trunk->previous = previous;
