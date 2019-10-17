@@ -19,6 +19,10 @@ typedef struct Trunk {
 Node *createNode(int);
 void insertNode(Node **, int);
 void printTree(Node *, Trunk *, int); 
+int searchNode(Node *, int);
+void preorder(Node *);
+void inorder(Node *);
+void postorder(Node *);
 
 int main() {
 	int data, option;
@@ -30,33 +34,59 @@ int main() {
 		printf("\nSelecciona una opcion:");
 		printf("\n1. Agregar nodo al arbol.");
 		printf("\n2. Imprimir arbol.");
-		printf("\n3. Salir.");
+		printf("\n3. Buscar un dato en el arbol.");
+		printf("\n4. Recorrido el arbol en preorden.");
+		printf("\n5. Recorrido el arbol en inorden.");
+		printf("\n6. Recorrido el arbol en postorden.");
+		printf("\n7. Salir.");
 		printf("\n>> ");
 		scanf("%d", &option);
-
+		getchar();
 		switch (option)
 		{
 		case 1:
 			printf("\nIngrese el dato del nodo: ");
 			scanf("%d", &data);
 			insertNode(&tree, data);
-			printf("\n[+] Se ha ingresado el nodo correctamente\n\n");
+			printf("\n[+] Se ha ingresado el nodo correctamente");
 			getchar(); // Comentar en Windows
 			//system("pause"); Descomentar en caso de windows
 			break;
 		case 2:
 			printTree(tree, NULL, 0);
-			getchar(); // Comentar en Windows
 			//system("pause"); Descomentar en caso de windows
+			break;
+		case 3:
+			printf("Ingrese el dato a buscar: ");
+			scanf("%d", &data);
+			getchar();
+			if(searchNode(tree, data))
+				printf("\n[+] El dato %d ha sido encontrado en el arbol.", data);
+			else
+				printf("\n[-] Dato no encontrado.");
+			break;
+		case 4:
+			printf("\nPREORDEN\n");
+			preorder(tree);
+			break;
+
+		case 5:
+			printf("\nINORDEN\n");
+			inorder(tree);
+			break;
+
+		case 6:
+			printf("\nPOSTORDEN\n");
+			postorder(tree);
 			break;
 
 		default:
 			break;
 		}
-		printf("\n Presione una tecla para continuar... "); // Comentar en Windows
+		printf("\nPresione una tecla para continuar... "); // Comentar en Windows
 		getchar(); // Comentar en Windows
 		system("clear");
-	}while(option != 3);
+	}while(option != 7);
 
 	return 0;
 }
@@ -119,7 +149,7 @@ void printTree(Node *tree, Trunk *previous, int is_right) {
 	printTree(tree->right, trunk, 1);
 
 	if(!previous) {
-		strcpy(trunk->branch, " ---");
+		strcpy(trunk->branch, "---");
 	} 
 	else if(is_right) {
 		strcpy(trunk->branch, ".---");
@@ -141,5 +171,51 @@ void printTree(Node *tree, Trunk *previous, int is_right) {
 	printTree(tree->left, trunk, 0);
 }
 
+int searchNode(Node *tree, int number) {
+	if(tree == NULL) {
+		return 0;
+	}
+	else if(tree->data == number) {
+		return 1;
+	}
+	else if(number < tree->data) {
+		return searchNode(tree->left, number);
+	}
+	else {
+		return searchNode(tree->right, number);
+	}
+}
 
+void preorder(Node *tree) {
+	if(tree == NULL) {
+		return;
+	}
 
+	else {
+		printf("%d - ", tree->data);
+		preorder(tree->left);
+		preorder(tree->right);
+	}
+}
+
+void inorder(Node *tree) {
+	if(tree == NULL) {
+		return;
+	}
+	else {
+		inorder(tree->left);
+		printf("%d - ", tree->data);
+		inorder(tree->right);
+	}	
+}
+
+void postorder(Node *tree) {
+	if(tree == NULL) {
+		return;
+	}
+	else {
+		postorder(tree->left);
+		postorder(tree->right);
+		printf("%d - ", tree->data);
+	}
+}
