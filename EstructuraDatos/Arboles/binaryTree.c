@@ -41,18 +41,21 @@ int main() {
 			scanf("%d", &data);
 			insertNode(&tree, data);
 			printf("\n[+] Se ha ingresado el nodo correctamente\n\n");
-			system("pause");
+			getchar(); // Comentar en Windows
+			//system("pause"); Descomentar en caso de windows
 			break;
 		case 2:
 			printTree(tree, NULL, 0);
-			system("pause");
+			getchar(); // Comentar en Windows
+			//system("pause"); Descomentar en caso de windows
 			break;
 
 		default:
 			break;
 		}
-		printf("%d\n", tree->data);
-		system("cls");
+		printf("\n Presione una tecla para continuar... "); // Comentar en Windows
+		getchar(); // Comentar en Windows
+		system("clear");
 	}while(option != 3);
 
 	return 0;
@@ -101,7 +104,7 @@ void showTrunks(Trunk *p) {
 	printf("%s", p->branch);
 }
 
-void printTree(Node *tree, Trunk *previous, int is_left) {
+void printTree(Node *tree, Trunk *previous, int is_right) {
 
 	// Si el arbol esta vacio
 	if(tree == NULL) {	
@@ -113,12 +116,12 @@ void printTree(Node *tree, Trunk *previous, int is_left) {
 	trunk->previous = previous;
 	strcpy(trunk->branch, previous_string);
 
-	printTree(tree->left, trunk, 1);
+	printTree(tree->right, trunk, 1);
 
 	if(!previous) {
 		strcpy(trunk->branch, " ---");
 	} 
-	else if(is_left) {
+	else if(is_right) {
 		strcpy(trunk->branch, ".---");
 		strcpy(previous_string, "   |");
 	}
@@ -135,7 +138,7 @@ void printTree(Node *tree, Trunk *previous, int is_left) {
 	}
 	strcpy(trunk->branch, "   |");
 
-	printTree(tree->right, trunk, 0);
+	printTree(tree->left, trunk, 0);
 }
 
 
